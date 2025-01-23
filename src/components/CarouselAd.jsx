@@ -37,14 +37,14 @@ const CarouselAd = ({ slides, type }) => {
                                     <><div className="relative">
                                         <img className="pe-5" src={s} alt={`Slide ${idx}`} />
                                         <p className="absolute bottom-0 bg-white text-sm">800.000d</p>
-                                    </div><div className="text-sm">
+                                    </div><div className="text-sm mt-2">
                                             <p>Ao thun</p>
                                             <p>Sportwear</p>
                                         </div></>
                                 ) : (
                                     <><div className="relative">
                                     <img className="pe-5" src={s} alt={`Slide ${idx}`} />
-                                </div><div className="space-y-5">
+                                </div><div className="space-y-5 mt-2">
                                         <p className='text-xl font-bold'>Quan legging tap luyen</p>
                                         <p className='text-sm'>Tap quat nang,nang ta va chay bo</p>
                                         <button className='text-xl font-bold border-b-2 border-black'>

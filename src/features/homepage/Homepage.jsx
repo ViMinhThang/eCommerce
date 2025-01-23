@@ -3,7 +3,6 @@ import NavLink from '../../components/NavLink'
 import CarouselAd from '../../components/CarouselAd'
 const Homepage = () => {
 
-
   let slides = [
     'https://assets.adidas.com/images/w_600,f_auto,q_auto/4d002bbeaf23419f8bcd5a1c80ce102c_9366/Ao_Thun_Graphic_Tet_DJo_JZ4195_21_model.jpg',
     'https://assets.adidas.com/images/w_600,f_auto,q_auto/11f711667dfa4a77b94f64dd249daa5b_9366/Giay_Samba_OG_Hong_JI2682_01_00_standard.jpg',
@@ -57,10 +56,11 @@ const Homepage = () => {
         </div>
       </div>
       <div className='mt-5 bg-black text-white p-5'>
-        <div className='flex flex-col justify-center items-center text-center mx-auto max-w-[1600px] w-[1000px] space-y-5'>
+        <div className='flex flex-col justify-center items-center text-center mx-auto max-w-[1600px] w-[1000px] space-y-5 my-5'>
           <p className='font-bold text-3xl mt-5'>STORIES, STYLES AND SPORTSWEAR AT ADIDAS, SINCE 1949</p>
           <p className='text-left'>Sport keeps us fit. Keeps you mindful. Brings us together. Through sport we have the power to change lives. Whether it is through stories of inspiring athletes. Helping you to get up and get moving. Sportswear featuring the latest technologies, to up your performance. Beat your PB.adidas offers a home to the runner, the basketball player, the soccer kid, the fitness enthusiast. The weekend hiker that loves to escape the city. The yoga teacher that spreads the moves. The 3-Stripes are seen in the music scene. On stage, at festivals. Our sports clothing keeps you focused before that whistle blows. During the race. And at the finish lines. We’re here to supportcreators. Improve their game. Their lives. And change the world.</p>
           <p className='text-left'>adidas is about more than sportswear and workout clothes. We partner with the best in the industry to co-create. This way we offer our fans the sports apparel and style that match their athletic needs, while keeping sustainability in mind. We’re here to support creators. Improve their game. Create change. And we think about the impact we have on our world.</p>
+          <svg width="41" height="40" viewBox="0 0 41 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M40.056 31.8178L25.5403 6.66699L17.7654 11.152L29.6895 31.8178H40.056ZM26.2251 31.8178L16.6374 15.2206L8.86255 19.7056L15.8586 31.8178H26.2251ZM7.77487 23.7878L12.4076 31.8178H2.04107L0 28.2728L7.77487 23.7878Z" fill="white"></path></svg>
         </div>
       </div>
     </div>
