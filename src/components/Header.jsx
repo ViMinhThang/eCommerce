@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
+import NavLink from './NavLink'
 
 const SvgIcon = ({ children, className = '', ...props }) => (
   <svg className={className} {...props}>
@@ -8,15 +8,9 @@ const SvgIcon = ({ children, className = '', ...props }) => (
   </svg>
 )
 
-const NavLink = ({ to, children, className = '' }) => (
-  <Link to={to} className={className}>
-    {children}
-  </Link>
-)
-
 const Header = () => {
   return (
-    <div className='px-10 py-10'>
+    <div className='px-10 pt-10'>
       <div className='flex justify-between items-center'>
         <div className='flex-none w-96'>
           <Link to="/" className='inline-block w-14 h-14'>
