@@ -2,9 +2,9 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Homepage from "./features/homepage/Homepage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import MyAccount from "./features/userProfile/MyAccount";
+import UserRoutes from "./features/userProfile/UserRoutes";
 import OrderHistory from "./features/orderHistory/OrderHistory";
-import UserProfile from "./features/userAccount/UserProfile";
+import MenPage from "./features/menPage/MenPage";
 
 const App = () => {
   return (
@@ -12,14 +12,13 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/my-account" element={<MyAccount />} />
+        <Route path="/my-account/*" element={<UserRoutes />} />
         <Route path="/order-history" element={<OrderHistory />} />
-        <Route path="/my-account/profile" element={<UserProfile />} />
+        <Route path="/men" element={<MenPage />} />
       </Routes>
       <Footer />
     </Router>
-  )
-}
-
+  );
+};
 
 export default App;
