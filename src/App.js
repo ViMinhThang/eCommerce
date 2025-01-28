@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import UserRoutes from "./features/userProfile/UserRoutes";
 import OrderHistory from "./features/orderHistory/OrderHistory";
 import MenPage from "./features/menPage/MenPage";
+import SearchPage from "./features/searchPage/SearchPage";
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/my-account/*" element={<UserRoutes />} />
         <Route path="/order-history" element={<OrderHistory />} />
+        <Route path="/men/:categorySlug" element={<SearchPage />} />
         <Route path="/men" element={<MenPage />} />
       </Routes>
       <Footer />
