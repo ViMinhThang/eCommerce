@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import BreadCumb from "../../components/BreadCumb";
+import Overlay from "../../components/Overlay";
 
 const SearchPage = () => {
   const { categorySlug } = useParams();
   const location = useLocation();
   const [products, setProducts] = useState([]);
+
+
+  const [isOpenOverlay, setIsOpenOverlay] = useState(false)
 
   const slugToTitle = (slug) => {
     const titleMap = {
@@ -49,12 +53,12 @@ const SearchPage = () => {
   }, [categorySlug]);
 
   return (
-    <div className="container mx-auto mt-10">
+    <div className="relative container mx-auto mt-10">
       <BreadCumb items={generateBreadcrumbItems()} />
 
       <h1 className="font-bold mt-5 text-3xl">{slugToTitle(categorySlug)}</h1>
       <div className=" font-semibold text-sm flex justify-end mt-28">
-        <button className="border-2 border-black p-3">Lọc & Sắp xếp</button>
+        <button onClick={() => setIsOpenOverlay(true)} className="border-2 border-black p-3">Lọc & Sắp xếp</button>
       </div>
       <div className="product-grid">
         {products.map((product) => (
@@ -65,6 +69,8 @@ const SearchPage = () => {
           </div>
         ))}
       </div>
+      {isOpenOverlay && <Overlay onClose={() => setIsOpenOverlay(false)} />
+      }
     </div>
   );
 };
