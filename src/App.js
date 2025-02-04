@@ -4,8 +4,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import UserRoutes from "./features/userProfile/UserRoutes";
 import OrderHistory from "./features/orderHistory/OrderHistory";
-import MenPage from "./features/menPage/MenPage";
 import SearchPage from "./features/searchPage/SearchPage";
+import ProductDetail from "./features/productDetail/ProductDetail";
 
 const App = () => {
   return (
@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/my-account/*" element={<UserRoutes />} />
         <Route path="/order-history" element={<OrderHistory />} />
         <Route path="/men/:categorySlug" element={<SearchPage />} />
-        <Route path="/men" element={<MenPage />} />
+        <Route path="/sp/:productId" element={<ProductDetail />} />
       </Routes>
       <Footer />
     </Router>
