@@ -16,7 +16,7 @@ const App = () => {
         <Route path="/my-account/*" element={<UserRoutes />} />
         <Route path="/order-history" element={<OrderHistory />} />
         <Route path="/men/:categorySlug" element={<SearchPage />} />
-        <Route path="/sp/:productId" element={<ProductDetail />} />
+        <Route path="/sp/:id" element={<ProductDetail />} />
       </Routes>
       <Footer />
     </Router>

@@ -30,9 +30,22 @@ const productSchema = mongoose.Schema(
             required: true
         },
         image: {
-            type: String,
-            reuqired: true,
+            type: Array,
+            required: true,
         },
+        size: {
+            type: Array,
+            required: true,
+        },
+        details: {
+            type: Array,
+            required: true,
+        },
+        color: {
+            type: String,
+            required: true,
+        },
+
         brand: {
             type: String,
             required: true,
@@ -41,9 +54,13 @@ const productSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        descHeader: {
+            type: String,
+            required: false
+        },
         description: {
             type: String,
-            required: true,
+            required: false,
         },
         reviews: [reviewSchema],
         rating: {

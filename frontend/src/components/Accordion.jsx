@@ -8,7 +8,7 @@ const Accordion = ({ children, className = "" }) => {
   };
 
   return (
-    <div className={`w-full max-w-2xl mx-auto ${className}`}>
+    <div className={`max-w-3xl mt-10 mx-auto ${className}`}>
       {React.Children.map(children, (child, index) => {
         return React.cloneElement(child, {
           isOpen: activeIndex === index,

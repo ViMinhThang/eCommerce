@@ -1,62 +1,109 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import BreadCumb from "../../components/BreadCumb";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { generateBreadcrumbItems } from "../../utils/utils";
 import Button from "../../components/Button";
 import { MdFavoriteBorder } from "react-icons/md";
 import Accordion from "../../components/Accordion";
 import AccordionItem from "../../components/AccordionItem";
+import axios from "axios";
+import { getCurrentParams } from "../../utils/urlUtils";
 
 const ProductDetail = () => {
   const location = useLocation();
-
-  const imageURL = [
-    "https://assets.adidas.com/images/h_2000,f_auto,q_auto:sensitive,fl_lossy,c_fill,g_auto/645b32a19b844ce5a54f75421ab50bbd_9366/Dep_Keitaki_Alpha_Xam_JR1150_01_00_standard.jpg",
-    "https://assets.adidas.com/images/h_2000,f_auto,q_auto:sensitive,fl_lossy,c_fill,g_auto/146d358882a54deca7bc67cb88b13ba4_9366/Dep_Keitaki_Alpha_Xam_JR1150_02_standard_hover.jpg",
-    "https://assets.adidas.com/images/h_2000,f_auto,q_auto:sensitive,fl_lossy,c_fill,g_auto/e53cff6dace24227852172e361bb25fd_9366/Dep_Keitaki_Alpha_Xam_JR1150_03_standard.jpg",
-    "https://assets.adidas.com/images/h_2000,f_auto,q_auto:sensitive,fl_lossy,c_fill,g_auto/23890dcd62c640d4a2a7e2aab154923a_9366/Dep_Keitaki_Alpha_Xam_JR1150_04_standard.jpg",
-  ];
-
-  const colorURL = [
-    "https://assets.adidas.com/images/w_180,f_auto,q_auto,fl_lossy,c_fill,g_auto/0b08f6fdc6094b0db119eecd63e28b56_9366/Dep_Keitaki_Alpha_Xam_JR1150_00_plp_standard.jpg",
-    "https://assets.adidas.com/images/w_180,f_auto,q_auto,fl_lossy,c_fill,g_auto/38d75a18231544dca2d9a8310f0a5069_9366/Dep_Keitaki_Alpha_DJen_JR1152_00_plp_standard.jpg",
-    "https://assets.adidas.com/images/w_180,f_auto,q_auto,fl_lossy,c_fill,g_auto/798f14b63e084dbc90391a64a68bb6ee_9366/Dep_Keitaki_Alpha_Mau_tim_JR1153_00_plp_standard.jpg",
-    "https://assets.adidas.com/images/w_180,f_auto,q_auto,fl_lossy,c_fill,g_auto/c847a01dca144b6c831fd2df62a580d3_9366/Dep_Keitaki_Alpha_Mau_xanh_da_troi_JR1154_00_plp_standard.jpg",
-  ];
+  const [product, setProduct] = useState(null)
+  const [suggestionProduct, setSuggestionProduct] = useState([]);
+  const [isSticky, setIsSticky] = useState(false);
+  const param = getCurrentParams(location);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`/api/products/sp/${param}`)
+        const responseSuggest = await axios.get(`/api/products/suggestion`)
+        setProduct(response.data)
+        setSuggestionProduct(responseSuggest.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchProduct()
+  }, [param])
+  const imageURL = product ? product.image : [];
 
   return (
     <div>
       <div className="absolute z-50">
         <BreadCumb items={generateBreadcrumbItems(location)} />
       </div>
-      <div className="flex gap-5">
-        <div className="grid grid-cols-2 gap-2 w-[1430px]">
-          {imageURL.map((item, index) => (
-            <img src={item} key={index} />
-          ))}
+      <div className="flex gap-5 relative">
+        <div className="flex flex-col">
+          <div className="grid grid-cols-2 gap-2 w-[1430px] border-r-2">
+            {imageURL.map((item, index) => (
+              <img src={product && item} key={index} />
+            ))}
+
+          </div>
+          <Accordion className="mx-auto ">
+            <AccordionItem className="border-b-2 border-t-2" classNameTitle="font-bold" title='Đánh giá'>
+
+            </AccordionItem>
+            <AccordionItem className="border-b-2" classNameTitle="font-bold " title="Mô tả">
+              <div className="grid grid-cols-2 gap-5 mt-5">
+                <div className=" space-y-2">
+                  <h2 className="text-xl font-bold">
+                    {product && product.descHeader}
+                  </h2>
+                  <p>
+                    {product && product.description}
+                  </p>
+                </div>
+                <img src={product && product.image[0]} />
+              </div>
+            </AccordionItem>
+            <AccordionItem className="border-b-2" classNameTitle="font-bold" title="Thông tin chi tiết">
+              <ul className="grid grid-cols-2 mx-auto gap-5 list-disc pl-5">
+                {product && product.details.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+            </AccordionItem>
+          </Accordion>
+          <div className="ms-20 mt-20 font-bold text-3xl mb-20">
+            <h2>Hoàn thiện phong cách</h2>
+            <div className="mt-10 flex gap-5 w-[1200px]">
+              {suggestionProduct.map((product) => (
+                <Link to={`/sp/${product._id}`} key={product._id} className="product-card hover:border-2 border-black">
+                  <img src={product.image[0]} alt={product.name} />
+                  <div className="flex flex-col ms-2">
+                    <p className="text-sm font-medium">{product.price}</p>
+                    <h3 className="text-xl font-medium">{product.name}</h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col space-y-10">
+
+        <div className="flex flex-col space-y-10 mr-2 sticky top-20 h-fit">
           <div className="flex flex-col mt-10 space-y-1">
-            <p className="text-2xl">Sportswear</p>
-            <h2 className="text-3xl font-bold">Dép KEITAKI ALPHA</h2>
-            <p className="font-bold">450.000đ</p>
+            <p className="text-2xl">{product && product.category}</p>
+            <h2 className="text-3xl font-bold">{product && product.name}</h2>
+            <p className="font-bold">{product && product.price}</p>
           </div>
           <div className="flex flex-col space-y-2">
             <p className="font-bold">Màu sắc</p>
             <div className="flex space-x-1">
-              {[
-                colorURL.map((item, idx) => (
-                  <img className="w-[69.8px]" src={item} key={idx} />
-                )),
-              ]}
+              <span className="p-3 bg-neutral-100">
+                {product && product.color}
+              </span>
             </div>
           </div>
           <div className="flex flex-col">
             <p className="font-bold">Kích cỡ</p>
             <div className="grid grid-cols-5 gap-2">
-              {[4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, idx) => (
+              {product && product.size.map((item, idx) => (
                 <span className="p-3 bg-neutral-100" key={idx}>
-                  {item} UK
+                  {item}
                 </span>
               ))}
             </div>
@@ -71,35 +118,11 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      <div className="mt-10">
-        <Accordion className="ms-40">
-          <AccordionItem className="border-b-2 border-t-2" classNameTitle="font-bold " title="Mô tả">
-            <div className="grid grid-cols-2 gap-5">
-              <div className="">
-                <h2 className="text-xl font-bold">
-                  Đôi dép thoải mái, êm ái phù hợp ở bãi biển, hồ bơi hoặc ghế
-                  sofa.
-                </h2>
-                <p>
-                  Bất kể bạn đang thư giãn bên hồ bơi hay ra ngoài đi dạo, đôi
-                  dép adidas này sẽ giúp đôi chân bạn luôn thoải mái. Thân dép
-                  bằng cao su ôm chân cùng đế ngoài bằng chất liệu EVA tạo lớp
-                  đệm siêu nhẹ. Hãy diện đôi dép này và thư giãn.
-                </p>
-              </div>
-              <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/23890dcd62c640d4a2a7e2aab154923a_9366/Dep_Keitaki_Alpha_Xam_JR1150.jpg" />
-            </div>
-          </AccordionItem>
-          <AccordionItem className="border-b-2" classNameTitle="font-bold" title="Thông tin chi tiết">
-                <ul className="grid grid-cols-2 mx-auto gap-5 list-disc pl-5">
-                  <li>Dáng regular fit</li>
-                  <li>Kiểu dáng slip-on</li>
-                  <li>Thân dép bằng cao su</li>
-                  <li>Màu sản phẩm: Grey Three / Core Black / Core Black</li>
-                  <li>Mã sản phẩm: JR1150</li>
-                </ul>
-          </AccordionItem>
-        </Accordion>
+      <div className="flex justify-center items-center bg-yellow-300 font-bold text-4xl p-8">
+        <p className="p-5">TRỞ THÀNH HỘI VIÊN & HƯỞNG ƯU ĐÃI 15%</p>
+        <Button className="bg-black text-white max-w-64 py-3">
+          ĐĂNG KÝ MIỄN PHÍ
+        </Button>
       </div>
     </div>
   );

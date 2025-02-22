@@ -3,8 +3,8 @@ import Product from "../models/productModel.js"
 
 
 const getProduct = async (req, res) => {
+    const { category } = req.params
     const sort = req.query
-    console.log(req)
     let sortOptions = {}
 
     if (sort === 'price_asc') {
@@ -20,7 +20,21 @@ const getProduct = async (req, res) => {
     res.json(products)
 }
 
+const getProductById = async (req, res) => {
+    const product = await Product.findById(req.params.id)
+    if (product) {
+        res.json(product)
+    } else {
+        res.status(404)
+    }
+}
+const getSuggestionProduct = async (req, res) => {
+    const products = await Product.aggregate([{ $sample: { size: 4} }])
+    res.json(products)
+}
 
 export {
-    getProduct
+    getProduct,
+    getProductById,
+    getSuggestionProduct
 }

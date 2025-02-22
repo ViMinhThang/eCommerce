@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import BreadCumb from "../../components/BreadCumb";
 import Overlay from "../../components/Overlay";
 import { generateBreadcrumbItems, slugToTitle } from "../../utils/utils"
@@ -30,10 +30,13 @@ const SearchPage = () => {
   }
 
   const getCurrentParams = () => {
+    return new URLSearchParams(location.pathname)
+  }
+  const getCurrentQuery = () => {
     return new URLSearchParams(location.search)
   }
   const setURIParams = (filterName, value) => {
-    const params = getCurrentParams();
+    const params = getCurrentQuery();
     if (params.has(filterName) && params.get(filterName) === value) {
       params.delete(filterName)
     } else {
@@ -47,9 +50,10 @@ const SearchPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       const params = getCurrentParams();
+      const query = getCurrentQuery();
       console.log(params.toString())
       try {
-        const response = await axios.get(`/api/products?${params.toString()}`)
+        const response = query ? await axios.get(`/api/products/${params}?${query.toString()}`) : await axios.get(`/api/products/${params}`)
         console.log(response)
         setProducts(response.data)
       } catch (err) {
@@ -66,15 +70,17 @@ const SearchPage = () => {
 
       <h1 className="font-bold mt-5 text-3xl">{getSortLabel()}</h1>
       <div className=" font-semibold text-sm flex justify-end mt-28">
-        <button onClick={() => setIsOpenOverlay(true)} className="border-2 border-black p-3">Lọc & Sắp xếp</button>
+        <button onClick={() => setIsOpenOverlay(true)} className="flex space-x-2 justify-center items-center border-2 border-black p-3"><p>Lọc & Sắp xếp</p> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fffff"><path d="M440-120v-240h80v80h320v80H520v80h-80Zm-320-80v-80h240v80H120Zm160-160v-80H120v-80h160v-80h80v240h-80Zm160-80v-80h400v80H440Zm160-160v-240h80v80h160v80H680v80h-80Zm-480-80v-80h400v80H120Z" /></svg></button>
       </div>
-      <div className="product-grid">
+      <div className="grid grid-cols-4 gap-3 mt-5">
         {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <img src={product.image} alt={product.name} />
-            <h3>{product.name}</h3>
-            <p>{product.price}</p>
-          </div>
+          <Link to={`/sp/${product._id}`} key={product._id} className="product-card hover:border-2 border-black">
+            <img src={product.image[0]} alt={product.name} />
+            <div className="flex flex-col ms-2">
+              <p className="font-bold">{product.price}</p>
+              <h3>{product.name}</h3>
+            </div>
+          </Link>
         ))}
       </div>
       {isOpenOverlay && <Overlay onClose={() => setIsOpenOverlay(false)}>
