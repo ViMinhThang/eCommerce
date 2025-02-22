@@ -8,12 +8,13 @@ import Accordion from "../../components/Accordion";
 import AccordionItem from "../../components/AccordionItem";
 import axios from "axios";
 import { getCurrentParams } from "../../utils/urlUtils";
+import { useCart } from "../../context/CartContext";
 
 const ProductDetail = () => {
   const location = useLocation();
   const [product, setProduct] = useState(null)
   const [suggestionProduct, setSuggestionProduct] = useState([]);
-  const [isSticky, setIsSticky] = useState(false);
+  const { addToCart } = useCart()
   const param = getCurrentParams(location);
   useEffect(() => {
     const fetchProduct = async () => {
@@ -109,7 +110,7 @@ const ProductDetail = () => {
             </div>
           </div>
           <div className="flex">
-            <Button className="bg-black text-white w-[80%]">
+            <Button className="bg-black text-white w-[80%]" onClick={() => addToCart(product)}>
               Thêm vào giỏ hàng
             </Button>
             <div className="flex items-center border-2 border-black p-5 ms-2">

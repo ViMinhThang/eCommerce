@@ -6,20 +6,26 @@ import UserRoutes from "./features/userProfile/UserRoutes";
 import OrderHistory from "./features/orderHistory/OrderHistory";
 import SearchPage from "./features/searchPage/SearchPage";
 import ProductDetail from "./features/productDetail/ProductDetail";
+import { CartProvider } from "./context/CartContext";
+import CartPage from "./features/cartPage/CartPage";
 
 const App = () => {
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/my-account/*" element={<UserRoutes />} />
-        <Route path="/order-history" element={<OrderHistory />} />
-        <Route path="/men/:categorySlug" element={<SearchPage />} />
-        <Route path="/sp/:id" element={<ProductDetail />} />
-      </Routes>
-      <Footer />
-    </Router>
+    <CartProvider>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/my-account/*" element={<UserRoutes />} />
+          <Route path="/order-history" element={<OrderHistory />} />
+          <Route path="/men/:categorySlug" element={<SearchPage />} />
+          <Route path="/sp/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<CartPage />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </CartProvider>
+
   );
 };
 
