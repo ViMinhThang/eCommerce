@@ -5,6 +5,7 @@ import InputField from '../../components/InputField'
 const CartPage = () => {
 
     const [popup, setPopup] = useState(false)
+    const { cartItems, removeFromCart, updateQuantity } = useCart()
 
     const tooglePopup = () => {
         if (popup === false) {
@@ -13,15 +14,21 @@ const CartPage = () => {
             setPopup(false)
         }
     }
-    const { cartItems } = useCart()
-    console.log(cartItems)
+    const handleCartEvent = (event, productId, quantity = 0) => {
+        if (event === "remove") {
+            removeFromCart(productId)
+        } else if (event === "updateQuantity") {
+            console.log(1)
+            updateQuantity(productId, quantity)
+        }
+    }
     return (
         <div className='mx-72'>
             <div className='max-w-[1600px] flex justify-between mt-20'>
                 <div className='max-w-[960px] flex justify-between items-center'>
                     <div className='flex flex-col justify-center space-y-5'>
                         <h2 className='font-bold text-4xl'>GIỎ HÀNG CỦA BẠN</h2>
-                        <p>TỔNG CỘNG (1 sản phẩm) 4.900.000₫</p>
+                        <p>TỔNG CỘNG ({cartItems.length} sản phẩm) {cartItems.reduce((sum, item) => sum += (item.quantity * item.price), 0)}</p>
                         <p>Các mặt hàng trong giỏ hàng của bạn không được bảo lưu — hãy kiểm tra ngay để đặt hàng.</p>
                         <div className='flex flex-col space-y-5'>
                             {cartItems.length > 0 &&
@@ -43,7 +50,7 @@ const CartPage = () => {
                                                 </div>
                                                 <div className="flex flex-col justify-center">
                                                     {item.countInStock > 0 && (
-                                                        <select className="border-2 border-gray bg-white h-20 max-w-24  p-3">
+                                                        <select className="border-2 border-gray bg-white h-20 max-w-24  p-3" value={item.quantity} onChange={(e) => handleCartEvent("updateQuantity", item._id, Number(e.target.value))}>
                                                             {Array.from({ length: item.countInStock }, (_, index) => (
                                                                 <option key={index + 1} value={index + 1}>
                                                                     {index + 1}
@@ -58,7 +65,7 @@ const CartPage = () => {
                                                 {item.price}
                                             </div>
                                             <div className='flex flex-col space-y-2'>
-                                                <p><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fffff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg></p>
+                                                <p onClick={() => handleCartEvent("remove", item._id)}><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fffff"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg></p>
                                                 <p> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fffff"><path d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z" /></svg></p>
                                             </div>
                                         </div>
@@ -73,7 +80,7 @@ const CartPage = () => {
 
                 </div>
                 <div className='w-[500px] flex flex-col justify-start space-y-16'>
-                    <Button className='bg-black text-white w-[100%]'>
+                    <Button className='bg-black text-white min-w-[100%] font-light'>
                         THANH TOÁN
                     </Button>
                     <div className='flex-col justify-start'>

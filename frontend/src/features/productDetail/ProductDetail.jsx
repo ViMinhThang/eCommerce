@@ -9,12 +9,14 @@ import AccordionItem from "../../components/AccordionItem";
 import axios from "axios";
 import { getCurrentParams } from "../../utils/urlUtils";
 import { useCart } from "../../context/CartContext";
+import { useFavorite } from "../../context/FavoriteContext";
 
 const ProductDetail = () => {
   const location = useLocation();
   const [product, setProduct] = useState(null)
   const [suggestionProduct, setSuggestionProduct] = useState([]);
   const { addToCart } = useCart()
+  const { addToFav } = useFavorite();
   const param = getCurrentParams(location);
   useEffect(() => {
     const fetchProduct = async () => {
@@ -113,8 +115,8 @@ const ProductDetail = () => {
             <Button className="bg-black text-white w-[80%]" onClick={() => addToCart(product)}>
               Thêm vào giỏ hàng
             </Button>
-            <div className="flex items-center border-2 border-black p-5 ms-2">
-              <MdFavoriteBorder />
+            <div className="flex items-center border-2 border-black p-5 ms-2" onClick={() => addToFav(product)}>
+              <MdFavoriteBorder  />
             </div>
           </div>
         </div>
